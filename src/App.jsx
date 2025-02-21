@@ -1,9 +1,13 @@
 import "./App.css";
 import { useDispatch, useSelector } from "react-redux";
 import { openModal, closeModal } from "./redux/modalSlice";
-import { useRef } from "react";
+import { useState } from "react";
 import { addProduct, removeProduct } from "./redux/productsSlice";
 import { login, logout } from "./redux/authSlice";
+import { addTodo } from "./redux/todoSlice";
+import NewTodoForm from "./components/NewTodoForm";
+import TodoList from "./components/TodoList";
+
 
 function App() {
   const dispatch = useDispatch();
@@ -32,6 +36,16 @@ function App() {
   const handleLogout = () => {
     dispatch(logout());
   };
+
+  const [text, setText] = useState("");
+
+  const handleAction = () => {
+    if (text.trim().length) {
+      dispatch(addTodo({ text }));
+      setText("");
+    }
+  };
+
   return (
     <>
       <div className={`${isOpen ? "bg-gray-700" : "bg-gray-900"} text-white`}>
@@ -60,6 +74,14 @@ function App() {
         ) : (
           <button onClick={handleLogin}>Kirish</button>
         )}
+      </div>
+      <div className="App">
+        <NewTodoForm
+          value={text}
+          updateText={setText}
+          handleAction={handleAction}
+        />
+        <TodoList />
       </div>
     </>
   );
