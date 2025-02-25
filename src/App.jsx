@@ -4,10 +4,6 @@ import { openModal, closeModal } from "./redux/modalSlice";
 import { useState } from "react";
 import { addProduct, removeProduct } from "./redux/productsSlice";
 import { login, logout } from "./redux/authSlice";
-import { addTodo } from "./redux/todoSlice";
-import NewTodoForm from "./components/NewTodoForm";
-import TodoList from "./components/TodoList";
-
 
 function App() {
   const dispatch = useDispatch();
@@ -48,40 +44,32 @@ function App() {
 
   return (
     <>
-      <div className={`${isOpen ? "bg-gray-700" : "bg-gray-900"} text-white`}>
-        <button onClick={() => dispatch(openModal())}>Modalni Ochisj</button>
+      <div className={`${isOpen && "bg-gray-700" } text-white`}>
+        <button className="border rounded-md px-2 py-1 bg-amber-50 text-black m-2" onClick={() => dispatch(openModal())}>Modalni Ochish</button>
 
         {isOpen && (
           <div>
             <div>
               <h2>Modal Oyna</h2>
               <p>Bu yerda kerakli ma’lumotni joylashtirishingiz mumkin.</p>
-              <button onClick={() => dispatch(closeModal())}>Yopish</button>
+              <button className="border rounded-md px-2 py-1 bg-amber-50 text-black m-2" onClick={() => dispatch(closeModal())}>Yopish</button>
             </div>
           </div>
         )}
       </div>
 
-      <button onClick={handleSubmit}>add</button>
-      <button onClick={handleDelete}>delete</button>
+      <button className="border rounded-md px-3 py-2 m-2 cursor-pointer hover:bg-amber-100" onClick={handleSubmit}>add</button>
+      <button className="border rounded-md px-3 py-2 m-2 cursor-pointer hover:bg-amber-100" onClick={handleDelete}>delete</button>
 
       <div>
         {isAuthenticated ? (
           <div>
             <p>Salom, {user.name}!</p>
-            <button onClick={handleLogout}>Chiqish</button>
+            <button className="border rounded-md px-3 py-2 m-2 cursor-pointer hover:bg-amber-50" onClick={handleLogout}>Chiqish</button>
           </div>
         ) : (
-          <button onClick={handleLogin}>Kirish</button>
+          <button className="border rounded-md px-3 py-2 m-2 cursor-pointer hover:bg-amber-50" onClick={handleLogin}>Kirish</button>
         )}
-      </div>
-      <div className="App">
-        <NewTodoForm
-          value={text}
-          updateText={setText}
-          handleAction={handleAction}
-        />
-        <TodoList />
       </div>
     </>
   );
