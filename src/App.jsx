@@ -4,15 +4,19 @@ import { openModal, closeModal } from "./redux/modalSlice";
 import { useState } from "react";
 import { addProduct, removeProduct } from "./redux/productsSlice";
 import { login, logout } from "./redux/authSlice";
+import { setMessage } from "./redux/helloSlice";
 
 function App() {
   const dispatch = useDispatch();
+  const message = useSelector((state) => state.hello.message);
   const isOpen = useSelector((state) => state.modal.isOpen);
+  const productList = useSelector((state) => state.prodcts.products);
+  console.log(productList);
 
   const productObject = {
     id: 5,
     name: "kartoshka",
-    count: "5 ta",
+    count: 5,
   };
 
   function handleSubmit(e) {
@@ -44,31 +48,90 @@ function App() {
 
   return (
     <>
-      <div className={`${isOpen && "bg-gray-700" } text-white`}>
-        <button className="border rounded-md px-2 py-1 bg-amber-50 text-black m-2" onClick={() => dispatch(openModal())}>Modalni Ochish</button>
+      <div className={`${isOpen && "bg-gray-700"} text-white`}>
+        <button
+          className="border rounded-md px-2 py-1 bg-amber-50 text-black m-2"
+          onClick={() => dispatch(openModal())}
+        >
+          Modalni Ochish
+        </button>
 
         {isOpen && (
           <div>
             <div>
               <h2>Modal Oyna</h2>
               <p>Bu yerda kerakli ma’lumotni joylashtirishingiz mumkin.</p>
-              <button className="border rounded-md px-2 py-1 bg-amber-50 text-black m-2" onClick={() => dispatch(closeModal())}>Yopish</button>
+              <button
+                className="border rounded-md px-2 py-1 bg-amber-50 text-black m-2"
+                onClick={() => dispatch(closeModal())}
+              >
+                Yopish
+              </button>
             </div>
           </div>
         )}
       </div>
 
-      <button className="border rounded-md px-3 py-2 m-2 cursor-pointer hover:bg-amber-100" onClick={handleSubmit}>add</button>
-      <button className="border rounded-md px-3 py-2 m-2 cursor-pointer hover:bg-amber-100" onClick={handleDelete}>delete</button>
+      <div>
+        <table>
+          <thead>
+            <tr>
+              <th>№ </th>
+              <th>Product: </th>
+              <th>Count: </th>
+            </tr>
+          </thead>
+          <tbody>
+            {productList &&
+              productList.map((product, index) => {
+                return (
+                  <tr key={index}>
+                    <td>{product.id}</td>
+                    <td>{product.name}</td>
+                    <td>{product.count}</td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
 
+        <button
+          className="border rounded-md px-3 py-2 m-2 cursor-pointer hover:bg-amber-100"
+          onClick={handleSubmit}
+        >
+          add
+        </button>
+        <button
+          className="border rounded-md px-3 py-2 m-2 cursor-pointer hover:bg-amber-100"
+          onClick={handleDelete}
+        >
+          delete
+        </button>
+      </div>
+      <div>
+        <h1>{message}</h1>
+        <button onClick={() => dispatch(setMessage("New Message!"))}>
+          Change Message
+        </button>
+      </div>
       <div>
         {isAuthenticated ? (
           <div>
             <p>Salom, {user.name}!</p>
-            <button className="border rounded-md px-3 py-2 m-2 cursor-pointer hover:bg-amber-50" onClick={handleLogout}>Chiqish</button>
+            <button
+              className="border rounded-md px-3 py-2 m-2 cursor-pointer hover:bg-amber-50"
+              onClick={handleLogout}
+            >
+              Chiqish
+            </button>
           </div>
         ) : (
-          <button className="border rounded-md px-3 py-2 m-2 cursor-pointer hover:bg-amber-50" onClick={handleLogin}>Kirish</button>
+          <button
+            className="border rounded-md px-3 py-2 m-2 cursor-pointer hover:bg-amber-50"
+            onClick={handleLogin}
+          >
+            Kirish
+          </button>
         )}
       </div>
     </>
